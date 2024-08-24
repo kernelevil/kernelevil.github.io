@@ -1,0 +1,1 @@
+我的个人博客[YHJ's blog](https://www.YHJ.com/)，具体搭建过程可以参考《[使用Github Pages+Hugo+PaperMod搭建博客](https://www.YHJ.com/posts/blog/build-blog-with-github-pages-hugo-and-papermod/)》。
