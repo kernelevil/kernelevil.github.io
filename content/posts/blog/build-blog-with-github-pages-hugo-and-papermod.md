@@ -5,6 +5,7 @@ draft: false
 categories: ["Blog"]
 tags: ["Blog", "Hugo"]
 summary: "在两个主题之间反复横跳了很久，强迫症真的得改改了"
+typora-root-url: ./..\..\..\static
 ---
 
 想搭这个博客已经很久了，但并不愿意搭在自己的服务器上，因为在服务器上做各种小实验的时候总会影响网站的访问，另外也不想花精力去做运维的工作，就一直拖了很久。之前也听说过静态博客与Github Pages搭配的方案，但说实话这种方案并不优雅，任何内容的更新都需要推送到Github重新编译，写文章时图片的路径也是个老大难问题。
@@ -575,12 +576,6 @@ params:
 
 勾选`Add a README file`，点击`Create Repository`，创建仓库。
 
-<<<<<<< HEAD
-![image-20230312223142762.png](/asm.github.io/images/image-20230312223142762.png) 
-=======
-![image-20230312223142762.png](/images/image-20230312223142762.png) 
->>>>>>> 40f8cf38573b02b2c8fa10cdac412140faefb233
-
 ### 将本地仓库推送至Github
 
 在项目根目录下创建本地仓库：
@@ -618,11 +613,11 @@ git push --set-upstream origin main
 
 访问Github仓库，选择 **Settings > Pages** ，在屏幕中间可以看到：
 
-![image-20230312230044090.png](/asm.github.io/images/image-20230312230044090.png)  
+![image-20230312230044090.png](/images/image-20230312230044090.png)  
 
 将 **Source** 切换至`GitHub Actions`，修改会立即生效，不需要点击`Save`。
 
-![image-20230312230218367.png](/asm.github.io/images/image-20230312230218367.png)  
+![image-20230312230218367.png](images/image-20230312230218367.png)  
 
 ### 配置Github Actions
 
@@ -724,15 +719,15 @@ git push
 
 在Github仓库页面，点击 **Actions** ，可以看到工作流的状态：
 
-![image-20230312230947340.png](/asm.github.io/images/image-20230312230947340.png)
+![image-20230312230947340.png](/images/image-20230312230947340.png)
 
 当Github完成了生成与部署工作，状态标识的颜色会变成绿色：
 
-![image-20230312231241925.png](/asm.github.io/images/image-20230312231241925.png)
+![image-20230312231241925.png](/images/image-20230312231241925.png)
 
 点击上面显示的commit信息，可以看到这个：
 
-![image-20230312231450220.png](/asm.github.io/images/image-20230312231450220.png)  
+![image-20230312231450220.png](/images/image-20230312231450220.png)  
 
 在`deploy`步骤下，可以看到网站的链接。
 
