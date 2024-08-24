@@ -617,7 +617,7 @@ git push --set-upstream origin main
 
 将 **Source** 切换至`GitHub Actions`，修改会立即生效，不需要点击`Save`。
 
-![image-20230312230218367.png](images/image-20230312230218367.png)  
+![image-20230312230218367.png](/images/image-20230312230218367.png)  
 
 ### 配置Github Actions
 
