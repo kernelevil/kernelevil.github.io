@@ -1,0 +1,153 @@
+baseURL: ""
+title: "YHJ's blog"
+languageCode: zh
+defaultContentLanguage: zh
+paginate: 5
+theme: PaperMod
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+params:
+  fancybox: true
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: "YHJ's blog"
+  description: "YHJ's blog"
+  keywords: [Blog, YHJ]
+  author: YHJ
+  # author: ["Me", "You"] # multiple authors
+  images: ["<link or path of image for opengraph, twitter-cards>"]
+  DateFormat: "2006-01-02"
+  defaultTheme: dark # dark, light
+  disableThemeToggle: false
+
+  busuanzi:
+    enable: true
+
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: true
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: false
+
+  # assets:
+    # disableHLJS: true # to disable highlight.js
+    # disableFingerprinting: true
+    # favicon: "<link / abs url>"
+    # favicon16x16: "<link / abs url>"
+    # favicon32x32: "<link / abs url>"
+    # apple_touch_icon: "<link / abs url>"
+    # safari_pinned_tab: "<link / abs url>"
+
+  label:
+    text: "YHJ's blog"
+    icon: /apple-touch-icon.png
+    iconHeight: 35
+
+  # profile-mode
+  profileMode:
+    enabled: false # needs to be explicitly set
+    title: "YHJ's blog"
+    subtitle: "This is subtitle"
+    imageUrl: "<img location>"
+    imageWidth: 120
+    imageHeight: 120
+    imageTitle: my image
+    buttons:
+      - name: Posts
+        url: posts
+      - name: Tags
+        url: tags
+
+  # home-info mode
+  homeInfoParams:
+    Title: "YHJ's blog"
+    Content: 人人生而自由，却无往不在枷锁之中……
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/"
+    - name: email
+      url: "https://mail.qq.com/"
+
+  analytics:
+    google:
+      SiteVerificationTag: "NdPc3bLBV_am5qXqNbK6jH8Dy7wdw6XcjBH4ijyFUjk"
+    # bing:
+    #   SiteVerificationTag: "XYZabc"
+    # yandex:
+    #   SiteVerificationTag: "XYZabc"
+
+  editPost:
+    URL: "https://github.com/YHJ/YHJ.github.io/blob/main/content"
+    Text: "提交修改建议" # edit text
+    appendFilePath: true # to append file path to Edit link
+
+  cover:
+    hidden: true # hide everywhere but not in structured data
+    hiddenInList: true # hide on list pages and home
+    hiddenInSingle: true # hide on single page
+
+  # for search
+  # https://fusejs.io/api/options.html
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    keys: ["title", "permalink", "summary", "content"]
+
+menu:
+  main:
+    - identifier: archives
+      name: 归档
+      url: /archives/
+      weight: 10
+    - identifier: categories
+      name: 分类
+      url: /categories/
+      weight: 20
+    - identifier: tags
+      name: 标签
+      url: /tags/
+      weight: 30
+    - identifier: search
+      name: 搜索
+      url: /search/
+      weight: 40
+
+
+# Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
+pygmentsUseClasses: true
+markup:
+  highlight:
+    noClasses: false
+    # anchorLineNos: true
+    # codeFences: true
+    # guessSyntax: true
+    # lineNos: true
+    # style: monokai
+
+outputs:
+    home:
+        - HTML
+        - RSS
+        - JSON # is necessary
