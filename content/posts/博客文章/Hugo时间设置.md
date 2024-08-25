@@ -1,6 +1,6 @@
 ---
 title: "Hugo时间配置"
-date: 2024-08-25 17:59:11
+date: 2024-08-25 18:14:56
 draft: false
 categories: ["博客文章"]
 tags: ["搜狗", "时间"]
