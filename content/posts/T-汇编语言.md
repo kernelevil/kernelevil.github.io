@@ -2,7 +2,7 @@
 title: ""
 date: 
 draft: false
-categories: [""]
+categories: ["汇编语言"]
 tags: ["", ""]
 summary: ""
 typora-root-url: ./..\..\..\static
