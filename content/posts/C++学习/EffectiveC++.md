@@ -30,3 +30,33 @@ class Test{
 > ### 用内敛函数模版替换#deifne定义函数
 
 ![image-20240926055445863](/images/image-20240926055445863.png)
+
+> ### const放于函数后实现函数重载
+
+```c++
+#include <iostream>
+using namespace std;
+class Test {
+
+public:
+    std::string text = "hellow";
+public:
+   const char& operator[](const std::size_t n) const{
+       std::cout << "带const"<<endl;
+       return text[n];
+   }
+     char& operator[](const std::size_t n)  {
+       std::cout << "不带const"<<endl;
+       return text[n];
+   }
+};
+int main()
+{     
+    Test nt;
+    nt[1];
+    const Test ct;
+    ct[1];
+    return 0;
+}
+```
+
