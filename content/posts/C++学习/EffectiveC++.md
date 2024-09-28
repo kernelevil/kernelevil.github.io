@@ -60,3 +60,25 @@ int main()
 }
 ```
 
+> ### const位置
+
+const位于星号左侧内容不可改，const位于星号右侧指针不可改。
+
+> ### 迭代器加const
+
+```c++
+    std::vector<int> vec = {1,2,3};
+    const auto iter = vec.begin();
+    *iter = 10;//指针不可变，内容可变
+    auto citer = vec.cbegin();
+    citer = vec.cend();//ok,指针可变
+    *citer = 10;//error,内容不可变
+```
+
+> ### mutable打破const约束
+
+![image-20240928111330179](/images/image-20240928111330179.png)
+
+> ### 减少重复代码
+
+![image-20240928112550253](/images/image-20240928112550253.png)
