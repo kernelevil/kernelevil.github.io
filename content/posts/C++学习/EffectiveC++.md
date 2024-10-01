@@ -81,7 +81,72 @@ const位于星号左侧内容不可改，const位于星号右侧指针不可改�
 
 > ### 减少重复代码
 
-![image-20240928112550253](/images/image-20240928112550253.png)
+```c++
+//改进前
+#include <iostream>
+void myPrint(std::string type) {
+    std::cout << type << std::endl;
+}
+class TextBlock {
+public:
+    TextBlock(std::string t){
+        this->text = t;
+    }
+    const char& operator[](std::size_t pos) const {
+        myPrint("const版本打印");
+        return text[pos];
+    }
+    char& operator[](std::size_t pos){
+        myPrint("非const版本打印");
+        return text[pos];
+    }
+private:
+    std::string text;
+};
+int main() 
+{
+    TextBlock text("yhj");
+    text[1];
+    const TextBlock c_text("jhh");
+    c_text[0];
+    return 0;
+}
+```
+
+```c++
+//改进后，少调用了一次打印
+#include <iostream>
+void myPrint() {
+    std::cout << "开始打印" << std::endl;
+}
+class TextBlock {
+public:
+    TextBlock(std::string t){
+        this->text = t;
+    }
+    const char& operator[](std::size_t pos) const {
+        std::cout << "进入带const"<<std::endl;
+        myPrint();
+        return text[pos];
+    }
+    char& operator[](std::size_t pos){
+        std::cout << "进入不带const"<<std::endl;
+        return const_cast<char&>(
+            static_cast<const TextBlock&>(*this)[pos]
+            );
+    }
+private:
+    std::string text;
+};
+int main() 
+{
+    TextBlock text("yhj");
+    text[1];
+    //const TextBlock c_text("jhh");
+    //c_text[0];
+    return 0;
+}
+```
 
 > ### 编译单元
 
@@ -91,21 +156,86 @@ const位于星号左侧内容不可改，const位于星号右侧指针不可改�
 
 > ### 全局变量延迟到调用时初始化
 
-![image-20240928123826124](/images/image-20240928123826124.png)
+```c++
+#include <iostream>
+
+class Foo{};
+
+Foo& getFoo() {
+    std::cout << "开始初始化全局foo" << std::endl;
+    static Foo foo;
+    return foo;
+}
+
+int main() 
+{
+    std::cout << "进入main" << std::endl;
+    getFoo();
+    return 0;
+}
+```
 
 > ### 阻止拷贝
 
 1、通过=delete阻止拷贝构造和拷贝赋值
 
-![image-20240928140542420](/images/image-20240928140542420.png)
+```c++
+#include <iostream>
+class Uncopy {
+public:
+    Uncopy() {};
+    ~Uncopy() {};
+    Uncopy(const Uncopy&) = delete;
+    Uncopy& operator=(const Uncopy&) = delete;
+};
+int main() {
+    Uncopy cls,cls2;
+    cls = cls2;//erro禁止拷贝
+    return 0;
+}
+```
 
 2、通过私有化拷贝构造和拷贝赋值来阻止拷贝，拷贝构造函数和拷贝赋值函数不用实现，只声明即可。
 
-![image-20240928141437727](/images/image-20240928141437727.png)
+```c++
+#include <iostream>
+class Uncopy {
+public:
+    Uncopy() {};
+    ~Uncopy() {};
+private:
+    Uncopy(const Uncopy&);
+    Uncopy& operator=(const Uncopy&);
+};
+
+int main() {
+    Uncopy cls,cls2;
+    cls = cls2;//erro禁止拷贝
+    return 0;
+}
+```
 
 3、通过继承来阻止拷贝
 
-![image-20240928141559654](/images/image-20240928141559654.png)
+```c++
+#include <iostream>
+class Uncopy {
+public:
+    Uncopy() {};
+    ~Uncopy() {};
+private:
+    Uncopy(const Uncopy&);
+    Uncopy& operator=(const Uncopy&);
+};
+class MyCls : private Uncopy {
+
+};
+int main() {
+    MyCls cls,cls2;
+    cls = cls2;//erro禁止拷贝
+    return 0;
+}
+```
 
 > ### 基类析构函数一定要声明为虚函数，否则子类析构不被调用，造成泄露
 
@@ -144,15 +274,55 @@ int main() {
 
 ```
 
-
-
 > ### 抽取方法将异常处理留给调用者
 
-![image-20240928150847407](/images/image-20240928150847407.png)
+```c++
+class DBConnectoin {
+public:
+    void close() {};
+};
+class DBConn {
+public:
+    void close() {
+        mydb.close();
+        closed = true;
+    }
+    ~DBConn() {
+        if (!closed) {  
+            try {
+                close();
+            }
+            catch (...) {
+                std::cout << "记录出错原因";
+            }
+        }   
+    };
+private:
+    DBConnectoin mydb;
+    bool closed;
+};
+```
 
 > ### 连等通常返回自身引用
 
-![image-20240928151726396](/images/image-20240928151726396.png)
+```c++
+#include <iostream>
+class Base {
+public:
+    Base& operator=(const Base& b){
+
+        return *this;
+    }
+public:
+    std::string name;
+};
+
+int main() {
+    Base base1,base2,base3;
+    base1 = base2 = base3;//连等
+    return 0;
+}
+```
 
 > ### 三五法则
 
@@ -172,21 +342,50 @@ public:
 };
 ```
 
-
-
 2、拷贝赋值运算符
 
-![image-20240928171338974](/images/image-20240928171338974.png)
+```c++
+class Base {
+public:
+    //拷贝赋值运算符
+    Base& operator=(const Base&) {};
+};
+```
 
 > ### 移动构造函数和移动赋值运算符
 
 1、移动构造函数
 
-![image-20240928170911899](/images/image-20240928170911899.png)
+```c++
+#include <iostream>
+class Base {
+public:
+    Base(Base&& b) noexcept :name(b.name)  {//初始化器接管b中资源
+        b.name = nullptr; //令析构是安全的
+    }
+public:
+    std::string name;
+};
+```
 
 2、移动赋值运算符
 
-![image-20240928171001212](/images/image-20240928171001212.png)
+```c++
+class Base {
+public:
+    //移动赋值运算符
+    Base& operator=(Base&& b) noexcept{
+       //检测自赋值
+        if (this != &b) {
+            name = b.name;
+            b.name = nullptr;
+        }
+        return *this;
+    }
+public:
+    std::string name;
+};
+```
 
 > ### 对象切片
 
