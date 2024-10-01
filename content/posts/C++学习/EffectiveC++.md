@@ -600,7 +600,7 @@ int main() {
 
 这时候再来看`std::pair` 中的 swap 函数，你就会知道，如果用 `std::swap(first, __p.first);` 的写法，swap 函数就被限定在了命名空间 `std` 中；而如果使用 STL 中 `using std::swap;` 的写法，则会触发 ADL 机制，编译器会在全局范围（包括通过 using 引入的 `std` 命名空间）内查找 swap 函数。
 
-## 为什么要触发 ADL 机制？
+为何要触发ADL?
 
 如果你使用的是一般的数据类型，那么这里是否触发 ADL 机制都毫无区别。
 
@@ -625,7 +625,7 @@ std::pair<char, unsigned short> pcs;
 
 同样的原理，除了 `std::pair` 中的 swap 函数，STL 也在许多其他地方使用了 ADL 机制进行相应的优化。
 
-## 验证 ADL 的触发
+验证ADL触发：
 
 我写了一个短程序来模拟验证 STL 的写法触发了 ADL 机制，并实现了上中所说的我们想要的效果。
 
