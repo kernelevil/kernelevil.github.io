@@ -700,3 +700,127 @@ int main()
 }
 ```
 
+输出：
+
+```c++
+t_int:
+fun1, without 'using':  Call fun() in _std.
+fun2, with 'using':     Call fun() in _std.
+ 
+t_myType:
+fun1, without 'using':  Call fun() in _std.
+fun2, with 'using':     Call fun() specially for myType.
+```
+
+> ### C++四种类型转换区别
+
+1、const_cast` 用于去掉对象的 `const` 或 `volatile修饰符。   :  转换发生在编译时
+
+```c++
+#include <iostream>
+void modifyValue(const int* ptr) {
+    int* modifiablePtr = const_cast<int*>(ptr); // 去掉 const
+    *modifiablePtr = 20; // 修改值
+}
+int main() {
+    int value = 10;
+    const int* constPtr = &value;
+    modifyValue(constPtr);
+    std::cout << value << std::endl; // 输出: 20
+    return 0;
+}
+```
+
+2、static_cast   :  转换发生在编译时
+
+   它主要有如下几种用法
+  （1）用于类层次结构中基类和派生类之间指针或引用的转换
+   进行上行转换（把派生类的指针或引用转换成基类表示）是安全的
+   进行下行转换（把基类的指针或引用转换为派生类表示），由于没有动态类型检查，所以是不安全的
+  （2）用于基本数据类型之间的转换，如把int转换成char。这种转换的安全也要开发人员来保证
+  （3）把空指针转换成目标类型的空指针
+  （4）把任何类型的表达式转换为void类型
+     注意：static_cast不能转换掉expression的const、volitale或者__unaligned属性。
+
+​    可以实现C++中内置基本数据类型之间的相互转换
+
+```c++
+int a = 10;
+int b = 3;
+double result = static_cast<double>(a) / static_cast<double>(b);
+```
+
+3、reinterpret_cast   :  转换发生在编译时
+
+ 它可以把一个指针转换成一个整数，也可以把一个整数转换成一个指针（先把一个指针转换成一个整数，在把该整数转换成原类型的指针，还可以得到原先的指针值），用于低级别的、不安全的转换，常用于指针和整型之间的转换。
+
+```c++
+#include <iostream>
+int main() {
+	int* p = reinterpret_cast<int*>(0x999999);
+	int val = reinterpret_cast<int>(p);
+	std::cout << val;
+    return 0;
+}
+```
+
+4、dynamic_cast   :  转换发生在运行时开销大
+
+用于安全的下行转换，适用于具有虚函数的类。
+
+```c++
+//转型失败例子，原因是对象类型不匹配：在你的代码中，b 是指向 Base 类型的对象，而不是 Derived 类型的对象。使用 dynamic_cast<Derived*>(b) 进行下行转换时，b 并不是指向 Derived 的实际对象，因此转换会失败。
+#include <iostream>
+
+class Base {
+public:
+    virtual void show() { std::cout << "Base class" << std::endl; }
+};
+
+class Derived : public Base {
+public:
+    void show() override { std::cout << "Derived class" << std::endl; }
+};
+
+int main() {
+    Base* b = new Base();
+    Derived* d = dynamic_cast<Derived*>(b); // 尝试下行转换
+    if (d == nullptr) {
+        std::cout << "Conversion failed!" << std::endl; // 输出: Conversion failed!
+    }
+    else {
+        d->show();
+    }
+    delete b;
+    return 0;
+}
+```
+
+```c++
+//修改后
+#include <iostream>
+
+class Base {
+public:
+    virtual void show() { std::cout << "Base class" << std::endl; }
+};
+
+class Derived : public Base {
+public:
+    void show() override { std::cout << "Derived class" << std::endl; }
+};
+
+int main() {
+    Base* b = new Derived(); // 创建 Derived 的对象并将其赋给 Base 指针
+    Derived* d = dynamic_cast<Derived*>(b); // 尝试下行转换
+    if (d == nullptr) {
+        std::cout << "Conversion failed!" << std::endl;
+    }
+    else {
+        d->show(); // 现在这个调用会成功
+    }
+    delete b; // 释放内存
+    return 0;
+}
+```
+
