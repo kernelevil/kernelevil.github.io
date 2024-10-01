@@ -164,7 +164,15 @@ C++三法则：如果需要[析构函数](https://so.csdn.net/so/search?q=析构
 
 1、拷贝构造函数
 
-![image-20240928171241035](/images/image-20240928171241035.png)
+```c++
+class Base {
+public:
+    //拷贝构造函数
+    Base(const Base&) {};
+};
+```
+
+
 
 2、拷贝赋值运算符
 
@@ -179,3 +187,34 @@ C++三法则：如果需要[析构函数](https://so.csdn.net/so/search?q=析构
 2、移动赋值运算符
 
 ![image-20240928171001212](/images/image-20240928171001212.png)
+
+> ### 对象切片
+
+```c++
+#include <iostream>
+class Base {
+public:
+    virtual void display() {
+        std::cout << "Base display";
+    };
+};
+class MyClass : public Base{
+public:
+    int age = 99;
+    void display() {
+        std::cout << "MyClass display";
+    }
+};
+void PrintFun(Base b) {
+    b.display();
+};
+int main() {
+
+    MyClass obj;  
+    PrintFun(obj);//由于传递的不是指针发生了对象切片，MyClass变为了Base,输出Base display
+
+    return 0;
+}
+
+```
+
