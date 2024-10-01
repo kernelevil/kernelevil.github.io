@@ -417,3 +417,33 @@ int main() {
 
 ```
 
+> ### 命名空间将类的成员函数划分到模块中
+
+```c++
+#include <iostream>
+namespace stuff {
+    class WebBrowser {
+    public:
+        void clearCach() { std::cout << "clearCach"; };
+        void clearHistory() { std::cout << "clearHistory"; };
+        void clearCookie() { std::cout << "clearCookie"; };
+    };
+}
+namespace stuff {
+    void clearCash(WebBrowser& web) { web.clearCach(); }
+}
+namespace stuff {
+    void clearHistory(WebBrowser& web) { web.clearHistory(); }
+}
+namespace stuff {
+    void clearCookie(WebBrowser& web) { web.clearCookie(); }
+}
+
+int main() 
+{
+    stuff::WebBrowser web;
+    stuff::clearCash(web);
+    return 0;
+}
+```
+
