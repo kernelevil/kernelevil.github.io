@@ -1198,3 +1198,43 @@ class B : public A
 typename C::const_iterator * x;
 ```
 
+> ### 类中重写new和delete(为了自己管理内存)
+
+```c++
+#include <iostream>
+class Base {
+public:
+    static void* operator new(std::size_t size) {
+        printf("%s size:%zu\n", __FUNCSIG__, size);
+        if (size != sizeof(Base)) {
+            printf("operator new %zu != %zu\n", size, sizeof(Base));
+            return ::operator new(size);
+        }
+        //这里可以写自己的new,
+        return ::operator new(size);
+    }
+   static void operator delete(void* rawMemory,std::size_t size) noexcept {
+        printf("%s size:%zu\n", __FUNCSIG__, size);
+        if (rawMemory == nullptr) return;
+        if (size != sizeof(Base)) {
+            printf("operator delete %zu != %zu\n", size, sizeof(Base));
+            ::operator delete(rawMemory);
+            return;
+        }
+        ::operator delete(rawMemory);
+        return;
+    }
+   virtual ~Base() = default;
+};
+class Derived :public Base {
+    int x;
+};
+int main() {
+    Derived* derive = new Derived;
+    delete derive;
+    Base* base = new Derived;
+    delete base;
+    return 0;
+}
+```
+
