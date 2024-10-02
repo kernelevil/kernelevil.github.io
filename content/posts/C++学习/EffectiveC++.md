@@ -350,6 +350,9 @@ public:
     //拷贝赋值运算符
     Base& operator=(const Base&) {};
 };
+Base b1,b2
+b1 = b2;
+//注意：这里隐藏的this指代b1 传入的参数是b2
 ```
 
 > ### 移动构造函数和移动赋值运算符
@@ -750,6 +753,28 @@ int b = 3;
 double result = static_cast<double>(a) / static_cast<double>(b);
 ```
 
+```c++
+//函数风格的类型转换
+#include <iostream>
+
+class Wdt {
+public:
+    explicit Wdt(size_t num) { this->num = num; };
+    size_t getNum() { return this->num; }
+private:
+    size_t num;
+};
+void doSomething(Wdt w) {
+    std::cout << w.getNum()<<std::endl;
+}
+
+int main() {
+    doSomething(Wdt(15));
+    doSomething(static_cast<Wdt>(20));//函数类型的类型转换
+    return 0;
+}
+```
+
 3、reinterpret_cast   :  转换发生在编译时
 
  它可以把一个指针转换成一个整数，也可以把一个整数转换成一个指针（先把一个指针转换成一个整数，在把该整数转换成原类型的指针，还可以得到原先的指针值），用于低级别的、不安全的转换，常用于指针和整型之间的转换。
@@ -823,4 +848,162 @@ int main() {
     return 0;
 }
 ```
+
+> ### Impl设计思想(交换时高效，仅交换指针)
+
+```c++
+#include <iostream>
+#include <vector>
+class WidgetImpl {
+public:
+    WidgetImpl() = default;
+private:
+    int a{ 0 }, b{ 0 }, c{0};
+    std::vector<double> v;
+};
+class Widget {
+public:
+    Widget() = default;
+    Widget(WidgetImpl* iml) {
+        pImpl = iml;
+    }
+    Widget(const Widget& w) {
+        if (w.pImpl == nullptr) {
+            this->pImpl = nullptr;//由于该对象还没构造完成所以这里不用像下面那样delete
+        }
+        else {
+            this->pImpl = new WidgetImpl;
+            *pImpl = *w.pImpl;
+        }
+    }
+    Widget& operator=(const Widget& w) {//w是等号右边的数
+        if (&w == this) {
+            return *this;
+        }
+        if (w.pImpl == nullptr) {
+            delete this->pImpl;//等号左边可能构造完成也可能没构造完成对 nullptr 使用 delete 是安全的，不会引发崩溃或未定义行为
+            pImpl = nullptr;
+        }
+        else {
+            if (this->pImpl == nullptr)
+                this->pImpl =new WidgetImpl;
+        }
+        return *this;
+    }
+    void printAddr() {
+        std::cout << pImpl<<std::endl;
+    };
+private:
+    WidgetImpl* pImpl = nullptr;
+};
+
+int main() {
+    Widget w1, w2(new WidgetImpl());
+    w1 = w2;
+    std::cout << "w1地址:" << &w1 << std::endl;
+    std::cout << "w1-impl地址：" << std::endl;
+    w1.printAddr();
+    std::cout << "w2地址:" << &w2 << std::endl;;
+    std::cout << "w2-impl地址：" << std::endl;
+    w2.printAddr();
+    std::swap(w1, w2);
+    std::cout << "w1地址:" << &w1 << std::endl;
+    std::cout << "w1-impl地址：" << std::endl;
+    w1.printAddr();
+    std::cout << "w2地址:" << &w2 << std::endl;;
+    std::cout << "w2-impl地址：" << std::endl;
+    w2.printAddr();
+    return 0;
+}
+```
+
+> ### 异常安全的代码
+
+基本异常安全：资源没有泄露，数据没有损坏。
+
+```c++
+//异常不安全代码
+#include <iostream>
+#include <mutex>
+class Image {
+public:
+    Image(std::istream&) {};
+};
+class PrettyMenu {
+public:
+    void changBG(std::istream& imgSrc) {
+        mutex.lock();
+        delete bg;
+        ++changeCount;
+        bg = new Image(imgSrc);//如果new失败，前面已经改变了数据且后面造成锁资源泄露
+        mutex.unlock();
+    };
+private:
+    std::mutex mutex;
+    Image* bg;
+    int changeCount;//背景更换次数
+};
+```
+
+```c++
+//修改为异常安全代码
+#include <iostream>
+#include <mutex>
+class Image {
+public:
+    Image(std::istream&) {};
+};
+class PrettyMenu {
+public:
+    void changBG(std::istream& imgSrc) {
+        std::lock_guard<std::mutex> lock(mutex);
+        bg.reset(new Image(imgSrc));
+        ++changeCount;
+    };
+private:
+    std::mutex mutex;
+    std::shared_ptr<Image> bg;
+    int changeCount;
+};
+```
+
+
+
+强异常安全：函数调用失败仍保持调用前的状态（我们可以在副本上操作，失败也不会影响原来状态）。
+
+```c++
+//经典的copy and swap 操作
+#include <iostream>
+#include <mutex>
+class Image {
+public:
+    Image(std::istream&) {};
+};
+struct PImpl {
+    PImpl(const PImpl& mpl) {
+        
+    }
+    std::shared_ptr<Image> bg;
+    int changeCount;
+};
+class PrettyMenu {
+public:
+    void changBG(std::istream& imgSrc) {
+        using std::swap;
+        std::lock_guard<std::mutex> lock(mutex);
+        std::shared_ptr<PImpl> pNew(new PImpl(*pImpl));//copy副本
+        pNew->bg.reset(new Image(imgSrc));
+        ++pNew->changeCount;
+        swap(pImpl, pNew);//交换指针
+    };
+private:
+    std::mutex mutex;
+    std::shared_ptr<PImpl> pImpl;   
+};
+
+```
+
+
+
+无异常抛出：基本内置类型的操作。
 
