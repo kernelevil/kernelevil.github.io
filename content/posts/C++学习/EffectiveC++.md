@@ -1003,7 +1003,88 @@ private:
 
 ```
 
-
-
 无异常抛出：基本内置类型的操作。
+
+> ### inline关键字
+
+1、解决多个编译单元重复定义问题
+
+```c++
+//foo.h
+inline int foo(){}
+//bar1.cpp
+#include "foo.h"
+int bar1(){ return foo();}
+//bar2.cpp
+#include "foo.h"
+int bar2(){ return foo();}
+//main.cpp
+int bar1();
+int bar2();
+int main(){
+    int r = bar1() + bar2();
+}
+```
+
+2、C++17之后用它声明后static声明的变量可直接赋值
+
+```c++
+//foo.h
+struct Foo{
+    inline static int foo = 1;
+}
+//bar1.cpp
+#include "foo.h"
+int bar1(){ return Foo::foo+1;}
+//bar2.cpp
+#include "foo.h"
+int bar2(){ return return Foo::foo+2;}
+//main.cpp
+int bar1();
+int bar2();
+int main(){
+    int r = bar1() + bar2();
+}
+```
+
+3、inline作用于命名空间（展开嵌套命名空间）
+
+```c++
+//lib.h
+#define version 2022L
+namespace libfoo{
+    #if version >= 2022L
+        inline
+    #endif
+            namespace libfoo_2022
+             {
+                int foo2022();
+             }
+    #if version < 2019L
+         inline
+    #endif
+             namespace libfoo_2019
+             {
+                int foo2019();
+             }
+}
+//main.cpp
+using namespace libfoo;
+int main(){
+    foo_2022();//由于加了inline进行了展开，可不写libfoo_2022
+}
+```
+
+4、隐式内联
+
+```c++
+//函数实现写在类中隐式内联
+class A{
+    void fun()//fun是内联的
+    {
+        
+    }
+}
+//模版函数自动内联
+```
 
