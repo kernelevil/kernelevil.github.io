@@ -1088,3 +1088,113 @@ class A{
 //模版函数自动内联
 ```
 
+> ### 虚函数替代方案
+
+1、方案一
+
+```c++
+#include <iostream>
+class Base {
+public:
+    void healthValue() const{
+        doHealthValue();
+    }
+private:
+    virtual void doHealthValue() const = 0 ;
+};
+class ChildA : public Base {
+public:
+    void doHealthValue() const {
+        std::cout << "ChildA do Health"<<std::endl;
+    }
+};
+class ChildB : public Base {
+public:
+    void doHealthValue() const {
+        std::cout << "ChildB do Health"<<std::endl;
+    }
+};
+int main() {
+    ChildA a;
+    a.healthValue();
+    ChildB b;
+    b.healthValue();
+    return 0;
+}
+```
+
+2、函数指针方式（看看就行）
+
+```c++
+#include <iostream>
+class Base;
+void defaultHealthValue() {
+    std::cout << "default Healt Value" << std::endl;
+};
+void childAHealthValue(){
+    std::cout << "ChildA do Health" << std::endl;
+}
+void childBHealthValue() {
+    std::cout << "ChildB do Health" << std::endl;
+}
+class Base {
+public:
+    typedef void(*Func)();
+    explicit Base(Func f = defaultHealthValue):func(f) {};
+    void healthValue() const {
+        func();
+    }
+private:
+    Func func;
+};
+class ChildA : public Base {
+public:
+    ChildA(Func f = defaultHealthValue):Base(f) {}
+};
+class ChildB : public Base {
+public:
+    ChildB(Func f = defaultHealthValue) :Base(f) {}
+};
+int main() {
+    ChildA a(childAHealthValue);
+    a.healthValue();
+    ChildB b(childBHealthValue);
+    b.healthValue();
+    return 0;
+}
+```
+
+> ### EBO空基类优化
+
+1、一个空的类是占有一个字节的
+
+```c++
+class A{}
+sizeof(A) == 1
+```
+
+2、通过EBO将优化掉这个字节
+
+```c++
+class A {};
+class B : public A
+{
+    int i;
+}
+//B类大小四个字节，A占用大小被优化掉了EBO
+```
+
+> ### 利用virtual关键字解决菱形继承
+
+![image-20241002171547922](/images/image-20241002171547922.png)
+
+> ### typename
+
+1、typename在模版中与class一样，但是能用class的地方一定可以换成typename，用typename的地方不一定可以换成class
+
+2、嵌套从属名称前要加typename，为了防止编译器歧义
+
+```c++
+typename C::const_iterator * x;
+```
+
