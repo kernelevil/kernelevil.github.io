@@ -33,3 +33,17 @@ const int b;//param推导为int
 const int& c;//param推导为int
 ```
 
+> ### 数组和函数指针auto推导
+
+```c++
+    //数组推导
+    const char name[] = "YHJ";
+    auto str1 = name;//推导为const char *
+    auto& str2 = name;//推导为const char(&)[13]
+
+    //函数指针推导
+    void func(int, double);
+    auto f1 = func;//推导为void(*)(int,double)
+    auto& f2 = func;//推导为void(&)(int,double)
+```
+
