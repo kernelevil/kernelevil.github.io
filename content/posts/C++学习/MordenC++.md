@@ -47,3 +47,23 @@ const int& c;//param推导为int
     auto& f2 = func;//推导为void(&)(int,double)
 ```
 
+> ### decltype(C++14)
+
+占位符用法：
+
+```c++
+Widget w;
+const Widget& cw = w;
+auto myWidget1 = cw;                    //myWidget1的类型为Widget
+decltype(auto) myWidget2 = cw;          //myWidget2的类型是const Widget&,这里auto是cw的占位符
+
+```
+
+两个括号用法,加上引用
+
+```c++
+int x = 10;
+decltype(x) y = x;//y推导为int
+decltype((x)) y = x;//y推导为int&
+```
+
