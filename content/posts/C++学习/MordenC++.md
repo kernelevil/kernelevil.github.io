@@ -67,3 +67,54 @@ decltype(x) y = x;//y推导为int
 decltype((x)) y = x;//y推导为int&
 ```
 
+> ### 使用限定范围的枚举
+
+```c++
+enum class Color {A=0,B,C}//限定范围枚举
+//使用
+Color c = Color::A
+enum Color{A=0,B,C}//不限定范围
+//使用
+Color = A
+```
+
+> ### 利用模版简化类型编写
+
+```c++
+#include <iostream>
+#include <tuple>
+
+enum class COLOR {
+    R = 0,
+    G,
+    B
+};
+//模版改进版
+template<typename E>
+constexpr typename std::underlying_type<E>::type toUType(E e) noexcept {
+    return
+        static_cast<typename std::underlying_type<E>::type>(e);
+}
+int main() {
+    
+    using User = std::tuple<std::size_t, std::size_t, std::size_t>;
+    auto u = std::make_tuple(125, 233, 30);
+    auto r = std::get<0>(u);
+    auto g = std::get<1>(u);
+    auto b = std::get<2>(u);
+    //用枚举改进
+    using User = std::tuple<std::size_t, std::size_t, std::size_t>;
+    auto u = std::make_tuple(125, 233, 30);
+    auto r = std::get<static_cast<size_t>(COLOR::R)>(u);
+    auto g = std::get<static_cast<size_t>(COLOR::G)>(u);
+    auto b = std::get<static_cast<size_t>(COLOR::B)>(u);
+    //用模版改进
+    using User = std::tuple<std::size_t, std::size_t, std::size_t>;
+    auto u = std::make_tuple(125, 233, 30);
+    auto r = std::get<toUType(COLOR::R)>(u);
+    auto g = std::get<toUType(COLOR::G)>(u);
+    auto b = std::get<toUType(COLOR::B)>(u);
+    return 0;
+}
+```
+
