@@ -27,3 +27,15 @@ option.set keep-going : false ;
 3、执行命令
 
 b2.exe install --prefix=C:\Boost-vc142 --build-type=complete --toolset=msvc-14.2 threading=multi address-model=32  debug release
+
+4、工程配置
+
+![image-20241103125441402](/images/image-20241103125441402.png)
+
+![image-20241103125517530](/images/image-20241103125517530.png)
+
+参考文章：
+
+[【Boost】Windows 下个人在配置 Boost 踩到的坑以及解决方案 - RioTian - 博客园](https://www.cnblogs.com/RioTian/p/17581582.html)
+
+[VS2010编译Boost 1.57 - jeffkuang - 博客园](https://www.cnblogs.com/jeffkuang/articles/4330669.html)
