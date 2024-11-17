@@ -34,8 +34,26 @@ b2.exe install --prefix=C:\Boost-vc142 --build-type=complete --toolset=msvc-14.2
 
 ![image-20241103125517530](/images/image-20241103125517530.png)
 
+
+
+参考：
+
+b2.exe install --without-python --prefix=C:\Boost_v100 --build-type=complete --toolset=msvc-10.0  link=static runtime-link=static threading=multi address-model=32  debug release
+
+bjam stage --without-python --toolset=msvc-10.0 --build-type=complete --stagedir="D:\boost_1_57_0\bin\vc10"  link=shared runtime-link=shared threading=multi debug release
+
+5、注意事项：
+
+调用方与库必须位数一致
+
+编译选项等编译类型必须与库类型一致
+
+语言版本必须一致
+
 参考文章：
 
 [【Boost】Windows 下个人在配置 Boost 踩到的坑以及解决方案 - RioTian - 博客园](https://www.cnblogs.com/RioTian/p/17581582.html)
 
 [VS2010编译Boost 1.57 - jeffkuang - 博客园](https://www.cnblogs.com/jeffkuang/articles/4330669.html)
+
+[Boost库安装理解 - 夏天/isummer - 博客园](https://www.cnblogs.com/icmzn/p/5911073.html)
