@@ -62,6 +62,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
+          name: my-artifact-${{ matrix.runs-on }}
           path: ./public
 
   # Deployment job
