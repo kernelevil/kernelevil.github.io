@@ -1,14 +1,9 @@
 name: Deploy Hugo PaperMod Demo to Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
-    paths-ignore:
-      - "images/**"
-      - "LICENSE"
-      - "README.md"
-    branches:
-      - master
-      - exampleSite
+    branches: ["main"]
   workflow_dispatch:
     # manual run
     inputs:
