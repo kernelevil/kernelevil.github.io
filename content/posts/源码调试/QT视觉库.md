@@ -20,7 +20,7 @@ private slots:
 ```c++
 void frmImageSource::on_btnExecute_clicked()
 {
-	ui.btnExecute->setEnabled(false);//ces
+	ui.btnExecute->setEnabled(false);//ces1111
 	QApplication::processEvents();}这段代码QApplication::processEvents();
 }
 解释：
