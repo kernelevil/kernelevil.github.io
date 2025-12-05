@@ -36,3 +36,67 @@ typora-root-url: ./..\..\..\static
 </VirtualHost>
 ```
 
+> ## php语法
+
+1、变量以$开头
+
+```php
+$a = 10.9;
+echo $a;//输出10.9
+```
+
+2、isset — 检测变量是否设置
+
+```php
+$a = 10.9;
+echo isset($a);//输出1
+```
+
+3、var_dump — 打印变量的相关信息
+
+```php
+$b = 3.1;
+$c = TRUE;
+var_dump($b,$c);
+```
+
+结果：
+
+![image-20251205184848136](/images/image-20251205184848136.png)
+
+4、gettype — 获取变量的类型
+
+```php
+$a = -1;
+$b = 1.1;
+$c = "51CTO";
+$d = false;
+$e = array(1,2,"baidu",2.1);
+echo gettype($a).PHP_EOL;
+echo gettype($b).PHP_EOL;
+echo gettype($c).PHP_EOL;
+echo gettype($d).PHP_EOL;
+echo gettype($e).PHP_EOL;
+```
+
+结果：
+
+![image-20251205185932387](/images/image-20251205185932387.png)
+
+5、加减乘除
+
+```php
+$a = 10;
+$b = 20;
+echo $a+$b;
+echo "<br>";#换行操作
+echo $a-$b;
+echo "<br>";
+echo $a*$b;
+echo "<br>";
+echo $a/$b;
+```
+
+结果：
+
+![image-20251205190505451](/images/image-20251205190505451.png)
