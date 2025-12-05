@@ -10,4 +10,8 @@ typora-root-url: ./..\..\..\static
 
 > ## php开发环境搭建
 
-![image-20251205134919689](/images/image-20251205134919689.png)
+1、安装wamp
+
+![image-20251205140455921](/images/image-20251205140455921.png)
+
+2、关注安装后的bin目录和www目录
