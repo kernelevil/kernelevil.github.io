@@ -16,12 +16,6 @@ on:
         description: "Hugo Version"
         required: false
         default: "0.13.7"
-
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 # Default to bash
 defaults:
   run:
