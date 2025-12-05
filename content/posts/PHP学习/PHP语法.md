@@ -100,3 +100,84 @@ echo $a/$b;
 结果：
 
 ![image-20251205190505451](/images/image-20251205190505451.png)
+
+6、字符串连接需要用点号
+
+```php
+<?php
+$a = "51";
+$b = "cto";
+$c = $a.$b;
+echo $c;//输出51cto
+```
+
+7、字符串双引号和单引号区别：双引号能够解析其中变量，单引号原封不动输出
+
+```php
+$a = "baidu";
+$b = "xxx$a";
+$c = 'xxx$a';
+echo $b,$c;//输出xxxbaidu  xxx$a
+```
+
+8、字符串常用函数
+
+```php
+[strlen]
+$a = "baidu";
+echo strlen($a);//输出5
+
+[mb_strlen]
+header("content-type:text/html;charset=utf-8");
+$a = "baidu";
+$b = "北京";
+echo mb_strlen($b, 'utf-8');//输出2
+
+[strpos — 查找字符串首次出现的位置]
+$a = "edu.51cto.com";
+$b = "北京";
+echo strpos($a,'51');//返回4，从零计数
+
+[strrpos — 查找字符串最后一次出现的位置]
+$a = "edu.51cto.co51m";
+$b = "北京";
+echo strrpos($a,'51');//返回12，从零计数
+
+[stripos — 查找字符串首次出现的位置,不区分大小写]
+
+[strstr — 查找字符串的首次出现,并截取出来]
+$a = "edu.51cto.co51m";
+echo strstr($a,"co");//输出co51m
+
+[substr — 返回字符串的子串]
+$a = "edu.51cto.co51m";
+echo substr($a,4,5);//输出51cto,从偏移4截取5个字符
+
+[strrchr — 输出拓展名]
+$a = "filename.txt";
+echo strrchr($a,".");//输出.txt
+
+[str_replace — 子字符串替换]
+$a = "edu.51cto.co51m";
+echo str_replace("51cto","baidu",$a);//输出：edu.baidu.co51m
+
+[explode — 使用一个字符串分割另一个字符串]
+$a = "www.51cto.com";
+$array =  explode(".",$a);//获取分割字符串
+print_r($array);//打印数组Array ( [0] => www [1] => 51cto [2] => com )
+[implode:explode的逆运算，将数组连接成字符串]
+
+[trim 去除首尾空白符]
+[ltrim 除去左侧空格]
+[rtrim 除去右侧空格]
+
+
+
+```
+
+9、解决汉字乱码
+
+```php
+header("content-type:text/html;charset=utf-8");
+```
+
