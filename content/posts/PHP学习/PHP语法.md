@@ -181,3 +181,13 @@ print_r($array);//打印数组Array ( [0] => www [1] => 51cto [2] => com )
 header("content-type:text/html;charset=utf-8");
 ```
 
+10、数组
+
+```php
+[array() 定义数组]
+$a = array(1,2,3,"baidu",false);
+print_r($a);//输出Array ( [0] => 1 [1] => 2 [2] => 3 [3] => baidu [4] => )
+
+
+```
+
