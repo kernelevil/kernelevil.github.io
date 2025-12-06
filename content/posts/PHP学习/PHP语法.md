@@ -188,6 +188,110 @@ header("content-type:text/html;charset=utf-8");
 $a = array(1,2,3,"baidu",false);
 print_r($a);//输出Array ( [0] => 1 [1] => 2 [2] => 3 [3] => baidu [4] => )
 
+[键值对数组]
+$a = array(
+    "one" => 1,
+    "two" => 2,
+    "three" => 3,
+    "four" => "baidu"
+);
+print_r($a);//Array ( [one] => 1 [two] => 2 [three] => 3 [four] => baidu )
 
+[count 计算数组长度]
+echo count($a);
+
+[foreach 遍历数组方法一]
+$a = array(
+    "one" => 1,
+    "two" => 2,
+    "three" => 3,
+    "four" => "baidu"
+);
+foreach ($a as $key => $value) {
+    echo $key . "=>" . $value . "<br>";
+}
+//输出
+one=>1
+two=>2
+three=>3
+four=>baidu
+    
+[list each 遍历数组方法二]
+ $a = array(
+1,2,3
+);
+while($row = each($a)){
+    list($k,$v) = $row;
+    echo $k."---".$v."<br>";
+}
+
+[数组增删]
+ $a = array(1,2,3);
+$a[] = 4;//数组增加元素
+unset($a[3]);//数组删除
+foreach ($a as $key => $value) {
+    echo $key . "=>" . $value . "<br>";
+}
+
+[array_key_exists 判断键值是否存在]
+$a = array(
+    "one" => 1,
+    "two" => 2,
+    "three" => 3,
+    "four" => "baidu"
+);
+$ishas = array_key_exists("two", $a);
+var_dump($ishas);//返回true
+```
+
+11、函数
+
+```php
+function a()
+{
+    echo "www.baidu.com<br>";
+    echo "www.sinia.com<br>";
+}
+a();
+```
+
+12、超全局变量
+
+```php
+var_dump($GLOBALS);
+var_dump($_SERVER);
+var_dump($_GET);
+var_dump($_POST);
+var_dump($_REQUEST);//GET与POST的集合
+```
+
+13、常量
+
+```php
+define("PI",3.1415926535898);
+echo  PI;
+```
+
+14、利用cookie统计网页访问次数
+
+```php
+setcookie("aaa","www.baidu.com");
+$num = 0;
+if(empty($_COOKIE["access"])){
+    setcookie("access",1);
+    echo 1;
+}else{
+    $num = $_COOKIE["access"];
+    $num = $num+1;
+    setcookie("access",$num);
+    echo $num;
+}
+```
+
+15、文件包含
+
+```php
+#include "x.php":报错继续执行
+require "x.php":报错终止执行后面的 
 ```
 
