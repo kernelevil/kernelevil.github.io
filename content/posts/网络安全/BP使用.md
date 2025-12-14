@@ -8,4 +8,6 @@ summary: "BP使用"
 typora-root-url: ./..\..\..\static
 ---
 
-![image-20251214092633584](/images/image-20251214092633584.png)
+> 上下游代理配置
+
+![image-20251214093018226](/images/image-20251214093018226.png)
